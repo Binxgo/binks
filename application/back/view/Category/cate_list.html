@@ -1,12 +1,11 @@
 {include file="layout/header" /}
 <div class="x-body">
     <div class="layui-row">
-        <form  id="search" class="layui-form layui-col-md12 x-so" >
-            <!--<input class="layui-input" placeholder="开始日" name="promote_start_time" id="start" value="">-->
-            <!--<input class="layui-input" placeholder="截止日" name="promote_end_time" id="end" value="">-->
-            <input type="text" name="goodsName"  placeholder="请输入商品名称" autocomplete="off" class="layui-input" value="{$goodsName  ?  $goodsName : '';}">
-            <input type="text" name="goodsPrice"  placeholder="请输入商品价格" autocomplete="off" class="layui-input" value="{$goodsPrice  ? $goodsPrice : '';}">
-            <button class="layui-btn"  onclick="parentNode.submit();" lay-submit="sreach" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        <form class="layui-form layui-col-md12 x-so">
+            <input class="layui-input" placeholder="开始日" name="start" id="start">
+            <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+            <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
@@ -121,11 +120,11 @@
             //alert(id);exit;
             var url = "{:url('goods/goodsDel')}";
             $.get(url,{id:id},function (res) {
-               if(res.status == 1)
-               {
-                   $(obj).parents("tr").remove();
-                   layer.msg(res.message,{icon:1,time:1000});
-               }
+                if(res.status == 1)
+                {
+                    $(obj).parents("tr").remove();
+                    layer.msg(res.message,{icon:1,time:1000});
+                }
             });
 
         });
@@ -146,15 +145,6 @@
 
         });
     }
-    // function sreach() {
-    //     var url = "{:url('search')}";
-    //     var data = $("#search").serialize();
-    //     //console.log(data);
-    // $.post(url,data,function (res) {
-    //     console.log(res);
-    // },'json');
-    //
-    // }
 </script>
 
 </body>

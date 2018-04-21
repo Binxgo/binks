@@ -28,12 +28,8 @@ class Goods extends Model
             $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
         });
     }
-    //
-    public function getList()
-    {
-        return $list = Goods::where('isDel',1)->order('id')->paginate(5);
 
-    }
+
     /*
      * 文件上传
      * @param $goods 模型对象
@@ -67,6 +63,47 @@ class Goods extends Model
 
 
    }
+   // 获取商品列表
+    public function getList()
+    {
+        //搜索
+        $where=[];
+        //$pageParam = ['query'=>[]];
+        if(request()->isGet())
+        {
+           if($name = input('param.goodsName'))
+           {
+               $where['goodsName'] = ['like','%'.$name.'%'];
+               //$pageParam['query']['goodsName'] = $name;
+           }
+//           $stime = input('param.promote_start_time');
+//           $etime = input('param.promote_end_time');
+//           $stime = strtotime($stime);
+//           $etime = strtotime($etime);
+//            if($stime && $etime)
+//            {
+//                $where['create_time'] = ['between time',[$stime,$etime]];
+//
+//            }elseif ($stime)
+//            {
+//                $where['create_time'] = ['> time',$stime];
+//            }else
+//            {
+//                $where['create_time'] = ['< time' ,$etime];
+//            }
+
+            if($price = input('param.goodsPrice'))
+            {
+                $where['goodsPrice'] = $price;
+                //$pageParam['query']['goodsPrice'] = $price;
+            }
+        }
+
+        //分页
+            //dump($where);
+        return $list = $this::where($where)->order('id')->paginate(5);
+
+    }
 
 
 
