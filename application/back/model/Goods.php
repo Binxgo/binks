@@ -20,7 +20,15 @@ class Goods extends Model
             $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
 
         });
+        Goods::beforeUpdate(function ($goods){
+            //处理上传
+            $path = ROOT_PATH.'public'.DS.'uploads';
+            $ext = ['size'=>12323,'ext'=>'jpg,png,gif'];
+            $file_rule = 'uniqid';
+            $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
+        });
     }
+    //
     public function getList()
     {
         return $list = Goods::where('isDel',1)->order('id')->paginate(5);
@@ -28,9 +36,15 @@ class Goods extends Model
     }
     /*
      * 文件上传
+     * @param $goods 模型对象
+     * @param $filename 文件名称
+     * @param $ext 文件后缀和大小
+     * @param $file_rule 生成的文件路径规则
+     * @param $path  文件上传后的路径
+     * @return array()
      */
 
-   public function uploads($goods,$filname,$thumb,$file_rule,$path)
+   public function uploads($goods,$filname,$ext,$file_rule,$path)
    {
 
        $img = request()->file($filname);
@@ -38,7 +52,7 @@ class Goods extends Model
        if(empty($img)) return false;
 
 
-       $info = $img->validate($thumb)->rule($file_rule)->move($path);
+       $info = $img->validate($ext)->rule($file_rule)->move($path);
        if($info)
        {
            $file_name = $info->getSaveName();

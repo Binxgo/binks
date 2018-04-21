@@ -10,7 +10,7 @@
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="window.location.href('{:url('goods/goodsAdd')}')"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="window.location.href='{:url('goods/goodsAdd')}'"><i class="layui-icon"></i>添加</button>
         <span class="x-right" style="line-height:40px">共有数据：{$total} 条</span>
     </xblock>
     <table class="layui-table">
@@ -33,7 +33,9 @@
         {volist name="list" id="vo" }
         <tr>
             <td>
-                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+                <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{$vo.id}'>
+
+                    <i class="layui-icon">&#xe605;</i></div>
             </td>
             <td>
                 {$vo.id}
@@ -48,7 +50,7 @@
 
             <td class="td-manage">
 
-                <a title="编辑"   href="{:url('goods/goodsEdit',['id'=>$vo['id']])}">
+                <a title="编辑"   href="{:url('goodsEdit',['id'=>$vo['id']])}">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
 
@@ -115,8 +117,16 @@
     function member_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             //发异步删除数据
-            $(obj).parents("tr").remove();
-            layer.msg('已删除!',{icon:1,time:1000});
+            //alert(id);exit;
+            var url = "{:url('goods/goodsDel')}";
+            $.get(url,{id:id},function (res) {
+               if(res.status == 1)
+               {
+                   $(obj).parents("tr").remove();
+                   layer.msg(res.message,{icon:1,time:1000});
+               }
+            });
+
         });
     }
 
@@ -128,8 +138,11 @@
 
         layer.confirm('确认要删除吗？'+data,function(index){
             //捉到所有被选中的，发异步进行删除
-            layer.msg('删除成功', {icon: 1});
-            $(".layui-form-checked").not('.header').parents('tr').remove();
+            $.post("{:url('goods/goodsDel')}",{id:data},function (res) {
+                layer.msg(res.message, {icon: 1});
+                $(".layui-form-checked").not('.header').parents('tr').remove();
+            });
+
         });
     }
 </script>
