@@ -2,16 +2,16 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start" id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <!--<input class="layui-input" placeholder="开始日" name="start" id="start">-->
+            <!--<input class="layui-input" placeholder="截止日" name="end" id="end">-->
             <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
             <button class="layui-btn"  lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
         </form>
     </div>
     <xblock>
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-        <button class="layui-btn" onclick="window.location.href='{:url('goods/goodsAdd')}'"><i class="layui-icon"></i>添加</button>
-        <span class="x-right" style="line-height:40px">共有数据：{$total} 条</span>
+        <button class="layui-btn" onclick="window.location.href='{:url('category/cateAdd')}'"><i class="layui-icon"></i>添加</button>
+        <span class="x-right" style="line-height:40px">共有数据：{$count} 条</span>
     </xblock>
     <table class="layui-table">
         <thead>
@@ -20,17 +20,13 @@
                 <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
             </th>
             <th>ID</th>
-            <th>商品名称</th>
-            <th>商品图片</th>
-            <th>商品价格</th>
-            <th>是否上架</th>
-            <th>市场价</th>
-            <th>加入时间</th>
-            <th>本店价格</th>
+            <th>商品分类名称</th>
+            <th>父类ID</th>
+            <th>类型ID</th>
             <th>操作</th></tr>
         </thead>
         <tbody>
-        {volist name="list" id="vo" }
+        {volist name="cate" id="vo" }
         <tr>
             <td>
                 <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='{$vo.id}'>
@@ -40,17 +36,12 @@
             <td>
                 {$vo.id}
             </td>
-            <td>{$vo['goodsName']}</td>
-            <td><img src= "__ROOT__/uploads/{$vo.goodsImg}"></td>
-            <td>{$vo.goodsPrice}</td>
-            <td>{$vo.isSale}</td>
-            <td>{$vo.marketPrice}</td>
-            <td>{$vo.create_time} 海淀区</td>
-            <td>{$vo.shopPrice}</td>
-
+            <td>{:str_repeat('--',$vo.level)}{$vo['cate_name']}</td>
+            <td>{$vo.pid}</td>
+            <td>{$vo.type_id}</td>
             <td class="td-manage">
 
-                <a title="编辑"   href="{:url('goodsEdit',['id'=>$vo['id']])}">
+                <a title="编辑"   href="{:url('category/cateEdit',['id'=>$vo['id']])}">
                     <i class="layui-icon">&#xe642;</i>
                 </a>
 
@@ -63,13 +54,7 @@
 
         </tbody>
     </table>
-    <div class="page">
-        <div>
 
-            {$list->render()}
-
-        </div>
-    </div>
 
 
 
@@ -118,7 +103,7 @@
         layer.confirm('确认要删除吗？',function(index){
             //发异步删除数据
             //alert(id);exit;
-            var url = "{:url('goods/goodsDel')}";
+            var url = "{:url('category/cateDel')}";
             $.get(url,{id:id},function (res) {
                 if(res.status == 1)
                 {
@@ -138,7 +123,7 @@
 
         layer.confirm('确认要删除吗？'+data,function(index){
             //捉到所有被选中的，发异步进行删除
-            $.post("{:url('goods/goodsDel')}",{id:data},function (res) {
+            $.post("{:url('category/cateDel')}",{id:data},function (res) {
                 layer.msg(res.message, {icon: 1});
                 $(".layui-form-checked").not('.header').parents('tr').remove();
             });

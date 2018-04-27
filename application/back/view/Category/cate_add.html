@@ -2,7 +2,7 @@
 
 <body>
 <div class="x-body">
-    <form class="layui-form" enctype="multipart/form-data"  method="post" action="" >
+    <form class="layui-form"   method="post" action="" >
 
         <div class="layui-form-item">
             <label for="L_email" class="layui-form-label">
@@ -13,7 +13,7 @@
                     <option value="0">顶级分类</option>
 
                     {volist name='cate' id='vo'}
-                    <option value="{$vo.id}">{$vo.cate_name}</option>
+                    <option value="{$vo.id}">{:str_repeat('--',$vo.level*2)}{$vo.cate_name}</option>
                     {/volist}
                 </select>
             </div>
@@ -39,6 +39,12 @@
                 <input type="text" i name="type_id"
                        autocomplete="off" class="layui-input">
             </div>
+        </div>
+        <div class="layui-form-item">
+            <label  class="layui-form-label">
+            </label>
+            <input  type="submit" class="layui-btn" lay-filter="add" lay-submit=""  value="添加">
+
         </div>
     </form>
 </div>
