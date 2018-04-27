@@ -2,7 +2,7 @@
 
 namespace app\back\controller;
 
-use think\Controller;
+use think\Db;
 use think\Request;
 
 class Category extends Base
@@ -14,7 +14,10 @@ class Category extends Base
      */
     public function cateList()
     {
-        //
+        $m = model('category');
+        $cate = $m->getTree();
+        $this->assign('cate',$cate);
+        $this->assign('count',$m->count());
        return $this->fetch('cate_list');
     }
 
@@ -25,7 +28,22 @@ class Category extends Base
      */
     public function cateAdd()
     {
-        //
+        $m = model('category');
+        $cate = $m->getTree();
+        if(request()->isPost())
+        {
+            $data = input('post.');
+            //dump($data);
+           if( $m->validate(true)->save($data))
+           {
+               $this->success('成功','Category/cateList');
+           }else
+           {
+               $this->error('失败');
+           }
+
+        }
+        $this->assign('cate',$cate);
         return $this->fetch('cate_add');
     }
 
@@ -57,9 +75,29 @@ class Category extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function edit($id)
+    public function cateEdit()
     {
-        //
+       $m =  model('category');
+        $cate_id = input('id');
+        if(request()->isPost())
+        {
+            $data = input('post.');
+            if($m->validate(true)->isUpdate(true)->save($data,['id'=>$cate_id]))
+            {
+                $this->success('成功','cateList');
+            }else{
+
+                $this->error('失败');
+            }
+        }
+
+        $cate = $m->getTree();
+        $cate_list =  Db::name('category')->find($cate_id);
+        $this->assign('cate_list',$cate_list);
+        $this->assign('cate',$cate);
+        $this->assign('cate_id',$cate_id);
+
+        return $this->fetch('cate_edit');
     }
 
     /**
@@ -80,8 +118,23 @@ class Category extends Base
      * @param  int  $id
      * @return \think\Response
      */
-    public function delete($id)
+    public function cateDel($id)
     {
         //
+        if(!is_array($id))
+        {
+            \app\back\model\Category::destroy(function ($query) use ($id)
+            {
+                $query->where('pid',$id)->field('id');
+            }
+            );
+            return  \app\back\model\Category::destroy($id) ? ['message'=>'成功','status'=>1] : ['message'=>'失败','status'=>0];
+        }else
+        {
+            return  \app\back\model\Category::destroy($id) ? ['message'=>'成功','status'=>1] : ['message'=>'失败','status'=>0];
+
+        }
+
+
     }
 }

@@ -15,17 +15,27 @@ class Goods extends Model
         Goods::beforeInsert(function ($goods){
             //处理上传
             $path = ROOT_PATH.'public'.DS.'uploads';
-            $ext = ['size'=>12323,'ext'=>'jpg,png,gif'];
+            $ext = ['size'=>202555,'ext'=>'jpg,png,gif'];
             $file_rule = 'uniqid';
             $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
 
         });
         Goods::beforeUpdate(function ($goods){
-            //处理上传
-            $path = ROOT_PATH.'public'.DS.'uploads';
-            $ext = ['size'=>12323,'ext'=>'jpg,png,gif'];
-            $file_rule = 'uniqid';
-            $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
+
+            if(request()->file('goodsImg')){
+                //处理上传
+                $path = ROOT_PATH.'public'.DS.'uploads';
+                $ext = ['size'=>252222,'ext'=>'jpg,png,gif'];
+                $file_rule = 'uniqid';
+                $goods->uploads($goods,'goodsImg',$ext,$file_rule,$path);
+                //并删除原来的图片
+                $id = $goods->id;
+                $img = $goods::where('id', $id)->value('goodsImg');
+                //$root_path = dirname(dirname(dirname(dirname(__File__))));
+                $img_dir = ROOT_PATH . 'public/uploads/' . "$img";
+                @unlink($img_dir);
+            }
+
         });
     }
 

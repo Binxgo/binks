@@ -8,7 +8,7 @@
 
 namespace app\back\controller;
 use app\back\model\Goods as goodsM;
-
+use app\back\validate\Goods as goodsV;
 use think\Db;
 use think\response\Redirect;
 
@@ -20,15 +20,16 @@ class Goods extends  Base
 
         if(request()->isPost())
         {
-            $data = input('param.');
+            $data = input('post.');
+           // dump($data);
 
-            if($m->data($data)->save())
+            if($m->validate(true)->save($data))
             {
-                $this->success('增加成功','goodsList');
+                $this->success('增加成功','goods/goodsList');
             }
             else
             {
-                $this->error('增加失败','goodAdd');
+                $this->error($m->getError());
             }
 
 
@@ -66,13 +67,13 @@ class Goods extends  Base
         {
             $data = input('param.');
            // dump($data);
-            if($m->allowField(true)->isUpdate(true)->save($data))
+            if($m->validate(true)->allowField(true)->isUpdate(true)->save($data))
             {
-                $this->success('修改成功','goodsList');
+                $this->success('修改成功','/goodsList');
             }
             else
             {
-                $this->error('修改失败','goodsEdit');
+                $this->error('修改失败','/goodsEdit');
                 //echo '失败';
             }
 
