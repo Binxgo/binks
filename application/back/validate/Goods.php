@@ -7,14 +7,14 @@
  */
 
 namespace app\back\validate;
-use think\validate;
+use think\Validate;
 
-class Goods extends validate
+class Goods extends Validate
 {
     // 当前验证的规则
     protected $rule = [
-       ['goodsName' => 'require','名称必须'],
-       [ 'goodsSn' => 'require|max:1,10','货号必须|货号只能在1-10之间'],
+       ['goodsName','require','名称必须'],
+       [ 'goodsSn','require|max:10','货号必须|货号只能在10之间'],
     ];
 
     protected $scene = [
