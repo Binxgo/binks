@@ -2,10 +2,11 @@
 
 namespace app\back\model;
 
-use think\Model;
 
-class Category extends Model
+
+class Category extends Base
 {
+
     //无限级分类树
     public function getTree()
     {
@@ -30,7 +31,6 @@ class Category extends Model
         }
         return $res;
     }
-
     public function getList()
     {
         if(request()->isGet())

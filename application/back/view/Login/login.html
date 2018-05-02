@@ -1,0 +1,52 @@
+{include file="layout/header" /}
+<body class="login-bg">
+
+<div class="login">
+    <div class="message">管理登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form" action="{:url('login/check')}">
+        <input name="username" placeholder="用户名"  type="text" lay-verify="required" class="layui-input" >
+        <hr class="hr15">
+        <input name="passwd" lay-verify="required" placeholder="密码"  type="password" class="layui-input">
+        <hr class="hr15">
+       <div> <img id="captcha_img" onclick="this.src='{:captcha_src()}?id='+Math.random();" alt="点击更换" title="点击更换" src="{:captcha_src()}" class="m">
+       </div>
+        <input name="check" lay-verify="required" placeholder="验证码"  type="text" class="layui-input">
+        <hr class="hr15">
+        <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <hr class="hr20" >
+    </form>
+</div>
+
+<script>
+    $(function  () {
+        layui.use('form', function(){
+            var form = layui.form;
+            // layer.msg('玩命卖萌中', function(){
+            //   //关闭后的操作
+            //   });
+            //监听提交
+            // form.on('submit(login)', function(data){
+            //     // alert(888)
+            //     alert(data.status);
+            //     // $.post("{:url('login/check')}",$('.layui-form').serialize(),function (res) {
+            //     //     alert(res.status);
+            //     //    // if(res.message)
+            //     //         //location.href='index.html'
+            //     // });
+            //
+            //     return false;
+            // });
+
+        });
+    })
+
+
+</script>
+
+
+<!-- 底部结束 -->
+
+</body>
+</html>

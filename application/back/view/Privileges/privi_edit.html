@@ -1,0 +1,106 @@
+{include file="layout/header" /}
+
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <form class="layui-form" enctype="multipart/form-data"  method="post" action="" >
+        <div class="layui-form-item">
+            <label for="L_name" class="layui-form-label">
+                <span class="x-red">*</span>权限名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="hidden" name="id" value="{$privi_list.id}">
+                <input type="text" id="L_name" name="title"
+                   value="{$privi_list.title}"    autocomplete="off" class="layui-input">
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label for="privi" class="layui-form-label">
+                <span class="x-red">*</span>上级权限
+            </label>
+            <div class="layui-input-inline" style="width:300px;text-align: left">
+                <select id="privi" name="pid">
+                    <option value="0"  >顶级权限</option>
+                    {volist name="privi" id="vo"}
+                    {if condition="($vo.id neq $privi_list.id) and ($vo.id eq $privi_list.pid)"}
+                        <option value="{$vo.id}" selected >{$vo.title}</option>
+                    {else /}
+                    <option value="{$vo.id}"  >{$vo.title}</option>
+                    {/if}
+                    {/volist}
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label for="privi_code" class="layui-form-label">
+                <span class="x-red">*</span> 权限标识
+            </label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入权限标识" id="privi_code" name="name" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="type" class="layui-form-label">
+                <span class="x-red"></span>权限类型
+            </label>
+            <div class="layui-input-inline">
+                <input type="text"  name="type"
+                       id="type" value="0"  autocomplete="off" class="layui-input">
+
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                如果type为1， condition字段就可以定义规则表达式。如定义{score}>5  and {score}<100
+            </div>
+
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label for="privi_url" class="layui-form-label">
+                权限规则表达式
+            </label>
+            <div class="layui-input-block">
+                <textarea placeholder="请输入权限规则表达式" id="privi_url" name="condition" class="layui-textarea"></textarea>
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                如果type为1， condition字段就可以定义规则表达式。如定义{score}>5  and {score}<100 表示用户的分数在5-100之间时这条规则才会通过。
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label for="other_privi_url" class="layui-form-label">
+                排序
+            </label>
+            <div class="layui-input-block">
+                <input placeholder="排序默认0" id="other_privi_url" name="sort" value="0" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label for="L_email" class="layui-form-label">
+                <span class="x-red">默认为1</span>有效标识
+            </label>
+            <div class="layui-input-inline">
+                <input type="text"  name="status"
+                       value="1"     autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                1-表示有效 0-表示无效
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <input  type="submit" class="layui-btn" lay-filter="add" lay-submit=""  value="修改">
+
+        </div>
+    </form>
+</div>
+
+
+</body>
+
+</html>

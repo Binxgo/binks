@@ -18,7 +18,8 @@
     "require": {
         "php": ">=5.4.0",
         "topthink/framework": "5.0.*",
-        "tanzhenxing/ueditor-thinkphp": "^1.01"
+        "tanzhenxing/ueditor-thinkphp": "^1.01",
+        "topthink/think-captcha": "1.*"
     },
     "autoload": {
         "psr-4": {
